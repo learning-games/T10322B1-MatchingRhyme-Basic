@@ -37,15 +37,7 @@ body{
   background: url("image/background2.png") center center / cover no-repeat fixed;
   overflow:hidden; color:#fff;
 }
-#game{
-  position: relative;
-  width: 100vw;
-  height: auto;
-  max-height: 100dvh;
-  aspect-ratio: 16 / 10;
-  margin: auto;
-  overflow: hidden;
-}
+#game{ position:relative; width:100vw; height:100vh; overflow:hidden }
 
 /* ===== HUD ===== */
 .hud{
@@ -121,33 +113,118 @@ body:not(.in-game) #clock {
 @media (max-width:480px){ .pill.gold{ --gold-size:24px; --gold-cols:8; --gold-rows:2 } }
 
 /* ===== Welcome / Landing ===== */
-#landing{ position:fixed; inset:0; display:flex; flex-direction:column; gap:22px; align-items:center; justify-content:center; background:url("image/background2.png") center/cover no-repeat fixed !important; z-index:20000; transition:opacity .3s ease }
-#landing.hide{ opacity:0; pointer-events:none; visibility:hidden }
-#landing .brand{ width:min(92vw,1100px) }
-#landing .brand img{ width:100%; height:auto; display:block; filter:drop-shadow(0 10px 30px rgba(0,0,0,.6)) }
-#welcome{ position:fixed; inset:0; background:url("image/welcome.png") center/cover no-repeat fixed; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; z-index:25000; transition:opacity .3s ease; }
-#welcome.hide{ opacity:0; pointer-events:none; visibility:hidden }
-#welcome #enterBtn{ padding:12px 28px; font-size:clamp(22px,4vw,36px); font-weight:1000; letter-spacing:.2px; border:0; border-radius:16px; color:#fff; background:rgba(0,0,0,.55); box-shadow:0 10px 28px rgba(0,0,0,.35); cursor:pointer; backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.18) }
-
-#welcome .brand{ width:min(90vw,1000px); 
-        margin-bottom:100px; 
-        display:flex; 
-        justify-content:center 
+#landing,
+#welcome{
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  z-index: 20000;
+  transition: opacity .3s ease;
 }
 
-#welcome .brand 
-        img{ width:130%; 
-        height:auto; display:block; 
-        animation:pulse 3s infinite ease-in-out; 
-        filter:drop-shadow(0 6px 18px rgba(0,0,0,.45)) 
+#welcome{
+  z-index: 25000;
+  background: url("image/welcome.png") center center / cover no-repeat;
 }
 
-#welcome .welcome-content{ 
-       display:flex; 
-       flex-direction:column; 
-       align-items:center; gap:0; 
-       margin-top:100px 
+#landing{
+  z-index: 20000;
+  background: url("image/background2.png") center center / cover no-repeat !important;
 }
+
+#landing.hide,
+#welcome.hide{
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* เวที 16:10 กลางจอ สำหรับ welcome / landing */
+#welcome .stage,
+#landing .stage{
+  width: min(100dvw, calc(100dvh * 16 / 10));
+  height: min(100dvh, calc(100dvw * 10 / 16));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding:
+    max(16px, env(safe-area-inset-top, 0px))
+    16px
+    max(16px, env(safe-area-inset-bottom, 0px))
+    16px;
+  box-sizing: border-box;
+}
+
+#landing .stage{
+  gap: 22px;
+}
+
+#landing .brand{
+  width: min(92%, 1100px);
+  display: flex;
+  justify-content: center;
+}
+
+#landing .brand img{
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,.6));
+}
+
+#welcome #enterBtn{
+  padding: 12px 28px;
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 1000;
+  letter-spacing: .2px;
+  border: 0;
+  border-radius: 16px;
+  color: #fff;
+  background: rgba(0,0,0,.55);
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+#welcome .brand{
+  width: min(90%, 1000px);
+  margin-bottom: clamp(24px, 8vh, 100px);
+  display: flex;
+  justify-content: center;
+}
+
+#welcome .brand img{
+  width: 130%;
+  height: auto;
+  display: block;
+  animation: pulse 3s infinite ease-in-out;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));
+}
+
+#welcome .welcome-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: clamp(12px, 6vh, 100px);
+  width: min(92%, 1100px);
+}
+
+.level-menu{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(92%, 640px);
+}
+
 @keyframes pulse{ 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.04);opacity:.9} }
 .level-menu{ display:flex; flex-direction:column; gap:14px; width:min(92vw,640px) }
 .levelBtn{ width:100%; padding:10px 16px; font-size:clamp(20px,4vw,34px); font-weight:1000; letter-spacing:.2px; border:0; border-radius:14px; color:#fff; background:rgba(0,0,0,.55); box-shadow:0 10px 28px rgba(0,0,0,.35); cursor:pointer; text-align:center; border:1px solid rgba(255,255,255,.18); backdrop-filter:blur(6px) }
@@ -217,8 +294,8 @@ body:not(.in-game) #clock {
 /* ===== ตัวเลือกแบบสี่เหลี่ยมมุมมน ===== */
 .option.circle{
   position:absolute;
-width: var(--c-w, clamp(200px, 28vw, 360px));
-height: var(--c-h, clamp(130px, 20vw, 240px));
+  width: var(--c-w, clamp(96px, 28vw, 360px));
+  height: var(--c-h, clamp(64px, 20vw, 240px));
 
   border-radius: 40px;              /* 👈 มุมมน */
   border: 6px solid rgba(255,255,255,.25);
@@ -241,6 +318,10 @@ height: var(--c-h, clamp(130px, 20vw, 240px));
   pointer-events:none;
 }
 
+/* อนุญาตให้ปุ่มที่ถูกเลือกตัวแรก ยังรับการลากได้ */
+.option.locked.selected{
+  pointer-events:auto;
+}
 .option.circle:hover{
   transform: scale(1.05);
 }
@@ -294,14 +375,19 @@ height: var(--c-h, clamp(130px, 20vw, 240px));
 
 /* ตัวหนังสือในปุ่ม (ปรับได้ตรงนี้) */
 .option.circle .label {
-  font-size: clamp(40px, 6vw, 80px);
+  font-size: clamp(10px, 5vw, 80px);
   font-weight: 900;
-  letter-spacing: .5px;
+  letter-spacing: .2px;
   color: #fff;
 
-  white-space: nowrap;      /* ❗ห้ามตัดบรรทัด */
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  text-align: center;
+  line-height: 0.95;
+
   display: inline-block;
-  max-width: 90%;
+  max-width: 92%;
 }
 
 .option.circle.glow{
@@ -314,6 +400,10 @@ height: var(--c-h, clamp(130px, 20vw, 240px));
   transition: transform 0.18s ease;
 }
 
+.option.circle.dragging{
+  cursor: grabbing;
+  box-shadow: 0 14px 36px rgba(0,0,0,.45);
+}
 /* ===== แถบเวลา ===== */
 #timebarWrap{ position:fixed; left:0; right:0; bottom:0; height:12px; background:rgba(255,255,255,.12); z-index:16000; border-top:1px solid rgba(255,255,255,.2) }
 #timebar{ height:100%; width:0%; background:#10b981; transition:width .1s linear }
@@ -450,7 +540,7 @@ height: var(--c-h, clamp(130px, 20vw, 240px));
 :root{
   --qTop: 8vh;    
   --qLeft: 50%;
-  --qFontMin: 24px;
+  --qFontMin: 12px;
   --qFontVW:  25vw;
   --qFontMax: 100px;
 }
@@ -467,7 +557,7 @@ height: var(--c-h, clamp(130px, 20vw, 240px));
 /* ===== Decorative Choice Images (Animated) ===== */
 .choice-decor-img{
   position:absolute;
-  width: clamp(120px, 12vw, 240px);
+  width: clamp(56px, 12vw, 240px);
   height:auto;
   pointer-events:none;
   z-index:20;
@@ -701,21 +791,25 @@ height: var(--c-h, clamp(130px, 20vw, 240px));
 
 <!-- ===== Welcome (หน้าสุด) ===== -->
 <div id="welcome" role="dialog" aria-modal="true">
-  <div class="welcome-content">
-    <div class="brand"><img src="image/banner2.png" alt="Banner"></div>
-    <button id="enterBtn">เข้าสู่เกม</button>
+  <div class="stage">
+    <div class="welcome-content">
+      <div class="brand"><img src="image/banner2.png" alt="Banner"></div>
+      <button id="enterBtn">เข้าสู่เกม</button>
+    </div>
   </div>
 </div>
 
 <!-- ===== Landing ===== -->
 <div id="landing" role="dialog" aria-modal="true" class="hide">
-  <div class="brand"><img src="image/banner2.png" alt="Banner"></div>
-<div class="level-menu">
+  <div class="stage">
+    <div class="brand"><img src="image/banner2.png" alt="Banner"></div>
+    <div class="level-menu">
   <button class="levelBtn" data-level="1">ด่านที่ 1 (คำ 1 พยางค์)</button>
   <button class="levelBtn" data-level="2">ด่านที่ 2 (คำ 2 พยางค์ ไม่มีตัวสะกด)</button>
   <button class="levelBtn" data-level="3">ด่านที่ 3 (คำ 2 พยางค์ มีตัวสะกด)</button>
   <button class="levelBtn" id="guideBtn">กติกาการเล่น 📖</button>
-   </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== ภารกิจ / หน้าเริ่ม ===== -->
@@ -1059,42 +1153,52 @@ function spawnDecorImages(){
   if(options.length !== 4) return;
 
   const leftImg = pick(DECOR_IMAGES_LEFT);
-const rightImgs = shuffle(DECOR_IMAGES_RIGHT).slice(0,3);
+  const rightImgs = shuffle(DECOR_IMAGES_RIGHT).slice(0,3);
 
-// ===== ปรับระยะเยื้องรูปตกแต่ง / ขวา =====
-const LEFT_OFFSET_X  = -240;    // ปรับเฉพาะฝั่งซ้าย
-const LEFT_OFFSET_Y  = -40;   // ยกซ้ายขึ้น/ลง
+  // ===== ปรับระยะเยื้องรูปตกแต่ง =====
+  const LEFT_OFFSET_X  = -240;  // ฝั่งซ้าย
+  const LEFT_OFFSET_Y  = -40;
 
-const RIGHT_OFFSET_Y = 0;   // ยกขวาขึ้น/ลง
-const RIGHT_OFFSET_X = -220;    // ปรับเฉพาะฝั่งขวา
-// ==========================================
+  // ฝั่งขวา: ใช้ "ระยะจากขอบขวา" ของกล่องคำถาม
+  const RIGHT_OFFSET_X = -60;   // ติดลบ = ขยับซ้าย
+  const RIGHT_OFFSET_Y = 0;     // ปรับขึ้น/ลงเพิ่มได้
+const RIGHT_OFFSET_X_PX = 0;
+const RIGHT_OFFSET_X_PCT = 1.60;
+
+  // อ่านตำแหน่ง/ขนาดของกล่องคำถามรอบปัจจุบัน
+  const qRect = qBox.getBoundingClientRect();
+
+  // ระยะห่างของกล่องคำถามจากขอบจอขวา
+  const distanceFromRight = window.innerWidth - qRect.right;
+
+  // สูตรใหม่ของบอส:
+  // ระยะจากขอบขวา + ความกว้างกล่องคำถาม + ขยับซ้ายเล็กน้อย
+  const questionBasedRightX = distanceFromRight + qRect.width + RIGHT_OFFSET_X;
 
   options.forEach((opt, i)=>{
-
     const rect = opt.getBoundingClientRect();
-const img = document.createElement('img');
-img.className = 'choice-decor-img';
+    const img = document.createElement('img');
+    img.className = 'choice-decor-img';
 
-// ===== แยกกลุ่มซ้าย / ขวา =====
-const isLeftGroup = (i === 0);
+    const isLeftGroup = (i === 0);
 
-// ซ้ายใช้ ques / ขวาใช้ choice
-if(isLeftGroup){
-  img.src = DECOR_CACHE[leftImg].src;
-}else{
-  img.src = DECOR_CACHE[rightImgs[i - 1]].src;
-}
+    if(isLeftGroup){
+      img.src = DECOR_CACHE[leftImg].src;
+    }else{
+      img.src = DECOR_CACHE[rightImgs[i - 1]].src;
+    }
 
-let centerX = rect.left + rect.width/2;
-let centerY = rect.top  + rect.height/2;
+    let centerX, centerY;
 
-if(isLeftGroup){
-  centerX -= LEFT_OFFSET_X;
-  centerY += LEFT_OFFSET_Y;
-}else{
-  centerX += RIGHT_OFFSET_X;
-  centerY += RIGHT_OFFSET_Y;
-}
+    if(isLeftGroup){
+      // ฝั่งซ้ายคง logic เดิม
+      centerX = rect.left + rect.width / 2 - LEFT_OFFSET_X;
+      centerY = rect.top  + rect.height / 2 + LEFT_OFFSET_Y;
+    }else{
+
+centerX = rect.left - (rect.width * RIGHT_OFFSET_X_PCT) + RIGHT_OFFSET_X_PX;
+centerY = rect.top + rect.height / 2 + RIGHT_OFFSET_Y;
+    }
 
     img.style.left = centerX + 'px';
     img.style.top  = centerY + 'px';
@@ -1102,6 +1206,7 @@ if(isLeftGroup){
     document.body.appendChild(img);
   });
 }
+
 
 function clearDecorImages(){
   document.querySelectorAll('.choice-decor-img').forEach(n=>{
@@ -1349,6 +1454,15 @@ function dropQuestion(text, imgSrc){
 
 let selected = [];
 
+// ===== Drag-to-hit system =====
+let dragSourceEl = null;
+let dragActive = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+let dragOriginLeft = '';
+let dragOriginTop = '';
+let dragRAF = 0;
+
 /* ===== วางตำแหน่ง 2x2 แบบตายตัว ===== */
 function spawnFourCircles(choices){
 
@@ -1455,6 +1569,9 @@ function autoSelectLeftChoiceWhenReady(){
       if (ended || paused || !awaitingAnswer) return;
       if (leftOption.classList.contains('locked')) return;
       leftOption.click();
+
+      // หลังออโต้คลิกตัวแรกแล้ว ให้ลากชนฮิทบ็อกเพื่อเลือกตัวที่สองได้ทันที
+      armAutoSelectedDrag(leftOption);
     }, 140);
   };
 
@@ -1469,6 +1586,139 @@ function autoSelectLeftChoiceWhenReady(){
 
   // ถ้าอนิเมชันจบแล้ว ค่อยหน่วงนิดแล้วเลือก
   triggerSelect();
+}
+
+function rectsHit(a, b, padX = 18, shrinkY = 28){
+  // คงความกว้างเดิมไว้ แต่ลดความสูงของฮิทบ็อกลง
+  const aTop = a.top + shrinkY;
+  const aBottom = a.bottom - shrinkY;
+
+  const bTop = b.top + shrinkY;
+  const bBottom = b.bottom - shrinkY;
+
+  return !(
+    a.right < b.left + padX ||
+    a.left > b.right - padX ||
+    aBottom < bTop ||
+    aTop > bBottom
+  );
+}
+
+function resetDragSourcePosition(){
+  if (!dragSourceEl) return;
+  dragSourceEl.style.left = dragOriginLeft;
+  dragSourceEl.style.top = dragOriginTop;
+  dragSourceEl.style.zIndex = '';
+  dragSourceEl.classList.remove('dragging');
+}
+
+function stopDragPair(keepPosition = false){
+  dragActive = false;
+
+  if (dragRAF) {
+    cancelAnimationFrame(dragRAF);
+    dragRAF = 0;
+  }
+
+  window.removeEventListener('pointermove', onDragPairMove);
+  window.removeEventListener('pointerup', onDragPairEnd);
+  window.removeEventListener('pointercancel', onDragPairEnd);
+
+  if (dragSourceEl) {
+    dragSourceEl.style.zIndex = '';
+    dragSourceEl.classList.remove('dragging');
+
+    if (!keepPosition) {
+      dragSourceEl.style.left = dragOriginLeft;
+      dragSourceEl.style.top = dragOriginTop;
+    }
+  }
+
+  dragSourceEl = null;
+}
+
+function findHitTarget(){
+  if (!dragSourceEl) return null;
+
+  const sourceRect = dragSourceEl.getBoundingClientRect();
+  const others = [...document.querySelectorAll('.option.circle')].filter(el =>
+    el !== dragSourceEl &&
+    !el.classList.contains('locked')
+  );
+
+  for (const el of others){
+    const r = el.getBoundingClientRect();
+    if (rectsHit(sourceRect, r, 22)) return el;
+  }
+  return null;
+}
+
+function checkDragPairHitNow(){
+  if (!dragActive || !dragSourceEl || ended || paused || !awaitingAnswer) return;
+
+  const target = findHitTarget();
+  if (!target) return;
+
+  stopDragPair(true);   // ✅ ค้างตำแหน่งล่าสุดไว้
+  handleSelect(target); // ✅ ชนเมื่อไร เลือกทันที
+}
+
+function onDragPairMove(ev){
+  if (!dragActive || !dragSourceEl) return;
+
+  const x = ev.clientX - dragOffsetX;
+  const y = ev.clientY - dragOffsetY;
+
+  if (dragRAF) cancelAnimationFrame(dragRAF);
+  dragRAF = requestAnimationFrame(() => {
+    dragSourceEl.style.left = x + 'px';
+    dragSourceEl.style.top = y + 'px';
+    checkDragPairHitNow();
+  });
+}
+
+function onDragPairEnd(ev){
+  dragSourceEl?.releasePointerCapture?.(ev?.pointerId);
+  stopDragPair();
+}
+
+function beginDragPair(ev, el){
+  if (ended || paused || !awaitingAnswer) return;
+  if (!el || selected.length !== 1) return;
+  if (selected[0] !== el) return;   // ลากได้เฉพาะคำที่ออโต้คลิกแล้ว
+
+  ev.preventDefault();
+
+  dragSourceEl = el;
+  dragActive = true;
+
+  const rect = el.getBoundingClientRect();
+  dragOffsetX = ev.clientX - rect.left;
+  dragOffsetY = ev.clientY - rect.top;
+
+  dragOriginLeft = el.style.left;
+  dragOriginTop = el.style.top;
+
+  el.style.zIndex = '30000';
+  el.classList.add('dragging');
+     el.setPointerCapture?.(ev.pointerId);
+
+  window.addEventListener('pointermove', onDragPairMove);
+  window.addEventListener('pointerup', onDragPairEnd);
+  window.addEventListener('pointercancel', onDragPairEnd);
+}
+
+function armAutoSelectedDrag(el){
+  if (!el) return;
+
+  el.style.touchAction = 'none';
+
+  if (el.__dragBound__) return;
+  el.__dragBound__ = true;
+
+  el.addEventListener('pointerdown', (ev) => {
+    beginDragPair(ev, el);
+  });
 }
 
 function handleSelect(el){
@@ -2062,7 +2312,7 @@ const WORD_POOL_LV3_WRONG = [
   { word: "ดับเพลิง", group: 2, audio: "audio6/no3rh4.mp3" },{ word: "หลักฐาน", group: 2, audio: "audio6/no3rh5.mp3" },
   { word: "ของเล่น", group: 3, audio: "audio6/no3rh6.mp3" },{ word: "แม่นยำ", group: 3, audio: "audio6/no3rh7.mp3" },{ word: "ลูกบอล", group: 3, audio: "audio6/no3rh8.mp3" },
   { word: "เคยตัว", group: 4, audio: "audio6/no3rh9.mp3" },{ word: "เครื่องบิน", group: 4, audio: "audio6/no3rh10.mp3" },{ word: "ทองแดง", group: 4, audio: "audio6/no3rh11.mp3" },
-  { word: "รางวัล", group: 5, audio: "audio6/no3rh12.mp3" },{ word: "ลงโทษ", group: 5, audio: "audio6/no3rh13.mp3" },
+  { word: "มอบหมาย", group: 5, audio: "audio6/no3rh16.mp3" },{ word: "ลงโทษ", group: 5, audio: "audio6/no3rh13.mp3" },
   { word: "ปากกา", group: 6, audio: "audio6/no3rh14.mp3" },{ word: "รับแขก", group: 6, audio: "audio6/no3rh15.mp3" },{ word: "มอบหมาย", group: 6, audio: "audio6/no3rh16.mp3" },
   { word: "หน้าต่าง", group: 7, audio: "audio6/no3rh17.mp3" },{ word: "ลูกสาว", group: 7, audio: "audio6/no3rh18.mp3" },{ word: "เห็ดหอม", group: 7, audio: "audio6/no3rh19.mp3" },
   { word: "สำรวม", group: 8, audio: "audio6/no3rh20.mp3" },{ word: "ห้องขัง", group: 8, audio: "audio6/no3rh21.mp3" },
@@ -2209,6 +2459,7 @@ function nextRound(){
   if (ended) return;
 
   clearRoundObjects();
+      stopDragPair();
     selected = [];
   awaitingAnswer = false;
   stopTimebar();
@@ -2271,8 +2522,9 @@ async function startGame(){
     // 🔒 หยุดและซ่อนสนามเกมทั้งหมด
     awaitingAnswer = false;
     stopTimebar();
-    clearRoundObjects();         
-        clearDecorImages();
+    clearRoundObjects(); 
+        stopDragPair();        
+    clearDecorImages();
     qBox.textContent = '';            
     qBox.style.display = 'none';        
     if (qImg){
