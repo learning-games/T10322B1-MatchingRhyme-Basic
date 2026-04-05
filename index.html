@@ -167,7 +167,7 @@ body:not(.in-game) #clock {
 }
 
 #landing .brand{
-  width: min(92%, 1100px);
+  width: min(80%, 900px);
   display: flex;
   justify-content: center;
 }
@@ -294,8 +294,8 @@ body:not(.in-game) #clock {
 /* ===== ตัวเลือกแบบสี่เหลี่ยมมุมมน ===== */
 .option.circle{
   position:absolute;
-  width: var(--c-w, clamp(96px, 28vw, 360px));
-  height: var(--c-h, clamp(64px, 20vw, 240px));
+  width: var(--c-w, clamp(66px, 28vw, 360px));
+  height: var(--c-h, clamp(40px, 19vw, 240px));
 
   border-radius: 40px;              /* 👈 มุมมน */
   border: 6px solid rgba(255,255,255,.25);
@@ -1180,13 +1180,13 @@ const RIGHT_OFFSET_X_PCT = 1.60;
     const img = document.createElement('img');
     img.className = 'choice-decor-img';
 
-    const isLeftGroup = (i === 0);
+const isLeftGroup = (i === 0);
 
-    if(isLeftGroup){
-      img.src = DECOR_CACHE[leftImg].src;
-    }else{
-      img.src = DECOR_CACHE[rightImgs[i - 1]].src;
-    }
+if(isLeftGroup){
+  return; // ❌ ไม่สร้างรูปฝั่งซ้าย
+}
+
+img.src = DECOR_CACHE[rightImgs[i - 1]].src;
 
     let centerX, centerY;
 
@@ -2004,7 +2004,7 @@ function collectAllGameAudios(){
 
   const uniq = new Set();
 
-  // เสียง UI
+  // ===== เสียง UI =====
   [
     "image/audio1.mp3",
     "image/win2.mp3",
@@ -2017,24 +2017,23 @@ function collectAllGameAudios(){
     "image/question2.mp3"
   ].forEach(p => uniq.add(p));
 
-  // ===== เสียงด่าน 1 =====
-  for(let i=1;i<=30;i++){
-    uniq.add(`audio/pongroop${i}.mp3`);
-    uniq.add(`audio/prx${i}.mp3`);
-  }
+  // ===== helper: ดึง audio จาก pool ที่ใช้จริง =====
+  const addAudiosFromPool = (pool)=>{
+    if (!Array.isArray(pool)) return;
+    pool.forEach(item=>{
+      if (item && item.audio) uniq.add(item.audio);
+    });
+  };
 
-  // ===== เสียงด่าน 2 =====
-  for(let i=1;i<=12;i++){
-    uniq.add(`audio2/ps${i}.mp3`);
-  }
-  for(let i=1;i<=33;i++){
-    uniq.add(`audio3/psx${i}.mp3`);
-  }
+  // ===== preload เสียงตาม pool จริงของเกม =====
+  addAudiosFromPool(typeof WORD_POOL_LV1 !== "undefined" ? WORD_POOL_LV1 : []);
+  addAudiosFromPool(typeof WORD_POOL_LV2 !== "undefined" ? WORD_POOL_LV2 : []);
+  addAudiosFromPool(typeof WORD_POOL_LV3 !== "undefined" ? WORD_POOL_LV3 : []);
 
-  // ===== เสียงด่าน 3 =====
-  for(let i=1;i<=30;i++){
-    uniq.add(`audio4/pk${i}.mp3`);
-  }
+  // ถ้ามี pool หลอก/เสริมในอนาคต จะเก็บให้ด้วย
+  addAudiosFromPool(typeof WORD_POOL_LV1_WRONG !== "undefined" ? WORD_POOL_LV1_WRONG : []);
+  addAudiosFromPool(typeof WORD_POOL_LV2_WRONG !== "undefined" ? WORD_POOL_LV2_WRONG : []);
+  addAudiosFromPool(typeof WORD_POOL_LV3_WRONG !== "undefined" ? WORD_POOL_LV3_WRONG : []);
 
   return [...uniq].map(p => new URL(p, location.href).href);
 }
@@ -2051,12 +2050,16 @@ function bindPreloadProgress(){
 }
 
 async function runGlobalPreload(){
-  const urls = collectAllGameImages();
+  const urls = [
+    ...collectAllGameImages(),
+    ...collectAllGameAudios()
+  ];
+
   const onProgress = bindPreloadProgress();
+
   try{
-    await preloadInBatches(urls, 18, onProgress);  // 12–24 กำลังดีบน GitHub Pages
+    await preloadInBatches(urls, 18, onProgress);
   } finally {
-    // ไม่ว่าบางรูปจะ fail บ้าง เราก็ไปต่อ (เพราะมี retry แล้ว)
     document.getElementById('preloadOverlay')?.remove();
     window.__ALL_IMAGES_READY__ = true;
   }
